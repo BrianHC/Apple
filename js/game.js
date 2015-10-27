@@ -29,6 +29,7 @@ function monsterObject(imageFilePath,xCoordinate,yCoordinate){
   this.y= yCoordinate;
   this.monsterReady = true;
   this.speed=1;
+  this.direction = "x";
 }
 
 // inititalize objects and variables
@@ -58,8 +59,8 @@ var reset = function () {
 	monster.y = 32 + (Math.random() * (canvas.height - 64));
 };
 
-// Update game objects
-var update = function (modifier) {
+var moveHero= function(modifier){
+	// move hero 
 	if (38 in keysDown) { // Player holding up
 		hero.y -= hero.speed * modifier;
 	}
@@ -89,8 +90,11 @@ var update = function (modifier) {
 	{
 		hero.y=canvas.height;
 	}
-	
-		if (monster.x > canvas.width) 
+}
+
+var moveMonster = function(){
+	// move monster
+	if (monster.x > canvas.width) 
 	{
 		monster.x = 0;
 	}
@@ -98,7 +102,19 @@ var update = function (modifier) {
 	{
 		monster.x=canvas.width;
 	}	
-	monster.x += 1*monster.speed;
+	if(monster.direction == "x"){
+		monster.x += 1*monster.speed;
+	}
+	if(monster.direction =="y"){
+		monster.y += 1*monster.speed;
+	}
+}
+
+// Update game objects
+var update = function (modifier) {
+
+	moveHero(modifier);
+	moveMonster();
 
 	// Are they touching?
 	if (
