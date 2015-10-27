@@ -29,7 +29,8 @@ function monsterObject(imageFilePath,xCoordinate,yCoordinate){
   this.y= yCoordinate;
   this.monsterReady = true;
   this.speed=1;
-  this.direction = "x";
+  this.direction = true;
+  this.updownDirection = true;
 }
 
 // inititalize objects and variables
@@ -93,6 +94,16 @@ var moveHero= function(modifier){
 }
 
 var moveMonster = function(){
+
+	// randomize direction 
+	var randomNumber = Math.floor((Math.random() * 100) + 1);
+	if(randomNumber > 99){
+		monster.direction = !monster.direction;
+	}
+	var randomNumber2 = Math.floor((Math.random() * 100) + 1);
+	if(randomNumber2 > 99){
+		monster.updownDirection = !monster.updownDirection;
+	}
 	// move monster
 	if (monster.x > canvas.width) 
 	{
@@ -102,11 +113,27 @@ var moveMonster = function(){
 	{
 		monster.x=canvas.width;
 	}	
-	if(monster.direction == "x"){
-		monster.x += 1*monster.speed;
+	if(monster.y >canvas.height)
+	{
+		monster.y=0;
 	}
-	if(monster.direction =="y"){
+	if (monster.y < 0)
+	{
+		monster.y=canvas.height;
+	}	
+	if(monster.direction == true){
+		if(monster.updownDirection == true){
+		monster.x += 1*monster.speed;
+		} else {
+		monster.x -= 1*monster.speed;
+		}
+	}
+	if(monster.direction ==false){
+		if(monster.updownDirection == true){
 		monster.y += 1*monster.speed;
+		} else {
+		monster.y -= 1*monster.speed;
+		}
 	}
 }
 
