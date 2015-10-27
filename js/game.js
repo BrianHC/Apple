@@ -28,6 +28,7 @@ function monsterObject(imageFilePath,xCoordinate,yCoordinate){
   this.x = xCoordinate;
   this.y= yCoordinate;
   this.monsterReady = true;
+  this.speed=1;
 }
 
 // inititalize objects and variables
@@ -97,7 +98,7 @@ var update = function (modifier) {
 	{
 		monster.x=canvas.width;
 	}	
-	monster.x+=1;
+	monster.x += 1*monster.speed;
 
 	// Are they touching?
 	if (
@@ -108,9 +109,10 @@ var update = function (modifier) {
 	) {
 		++monstersCaught;
 		reset();
-//		if(monstersCaught >3){
-//			monster.imageItem.src = "images/monster2.png";
-//		}
+		if(monstersCaught >3){
+			monster.speed+=0.5;
+			monster.imageItem.src = "images/monster2.png";
+		}
 	}
 };
 
