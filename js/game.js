@@ -96,15 +96,15 @@ var moveHero= function(modifier){
 var moveMonster = function(){
 
 	// randomize direction 
-	var randomNumber = Math.floor((Math.random() * 100) + 1);
-	if(randomNumber > 99){
+	var randomNumber = Math.floor((Math.random() * 1000) + 1);
+	if(randomNumber > 995){
 		monster.direction = !monster.direction;
 	}
-	var randomNumber2 = Math.floor((Math.random() * 100) + 1);
-	if(randomNumber2 > 99){
+	var randomNumber2 = Math.floor((Math.random() * 1000) + 1);
+	if(randomNumber2 > 995){
 		monster.updownDirection = !monster.updownDirection;
 	}
-	// move monster
+	// monster position validation 
 	if (monster.x > canvas.width) 
 	{
 		monster.x = 0;
@@ -121,15 +121,16 @@ var moveMonster = function(){
 	{
 		monster.y=canvas.height;
 	}	
-	if(monster.direction == true){
-		if(monster.updownDirection == true){
+	// move monster
+	if(monster.direction === true){
+		if(monster.updownDirection === true){
 		monster.x += 1*monster.speed;
 		} else {
 		monster.x -= 1*monster.speed;
 		}
 	}
-	if(monster.direction ==false){
-		if(monster.updownDirection == true){
+	if(monster.direction ===false){
+		if(monster.updownDirection === true){
 		monster.y += 1*monster.speed;
 		} else {
 		monster.y -= 1*monster.speed;
@@ -153,7 +154,7 @@ var update = function (modifier) {
 		++monstersCaught;
 		reset();
 		if(monstersCaught >3){
-			monster.speed+=0.5;
+			monster.speed+=0.1;
 			monster.imageItem.src = "images/monster2.png";
 		}
 	}
