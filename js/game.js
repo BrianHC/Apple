@@ -121,21 +121,21 @@ var moveMonster = function(){
 	{
 		monster.y=canvas.height;
 	}	
-	// move monster
-	if(monster.direction === true){
-		if(monster.updownDirection === true){
+	// move monster: if direction is true move in x direction, if false move in y
+	if(monster.direction){
+		if(monster.updownDirection){
 		monster.x += 1*monster.speed;
 		} else {
 		monster.x -= 1*monster.speed;
 		}
-	}
-	if(monster.direction ===false){
-		if(monster.updownDirection === true){
+	} else{
+		if(monster.updownDirection){
 		monster.y += 1*monster.speed;
 		} else {
 		monster.y -= 1*monster.speed;
 		}
 	}
+
 }
 
 // Update game objects
