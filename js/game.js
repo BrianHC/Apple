@@ -1,11 +1,20 @@
-// Create the canvas
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                                       Initialize
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = 512;
 canvas.height = 480;
 document.body.appendChild(canvas);
+var isPaused = false;
 
-// object prototype chain 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                                  object prototype chain 
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function baseObject() {
 }
 
@@ -39,11 +48,17 @@ var hero = new heroObject("images/hero.png",canvas.width / 2,canvas.height / 2,2
 var monster =  new monsterObject("images/monster.png",32 + (Math.random() * (canvas.width - 64)),32 + (Math.random() * (canvas.height - 64)));
 var monstersCaught = 0;
 
-// user input
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                                  Process Input
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var keysDown = {};
-// add to array while key is held down
+var keyPressed = {};
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
+	console.log(e.keyCode);
+	keyPressed[e.KeyCode]=true;
 }, false);
 //remove from array once key is lifted
 addEventListener("keyup", function (e) {
@@ -137,13 +152,16 @@ var moveMonster = function(){
 	}
 
 }
-
-// Update game objects
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                               Update game objects
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var update = function (modifier) {
-
-	moveHero(modifier);
-	moveMonster();
-
+	if(!isPaused){
+		moveHero(modifier);
+		moveMonster();
+	} 
 	// Are they touching?
 	if (
 		hero.x <= (monster.x + 32)
@@ -160,7 +178,11 @@ var update = function (modifier) {
 	}
 };
 
-// Draw everything
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                                 Render
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var render = function () {
 
 	ctx.drawImage(bg.imageItem, 0, 0);
@@ -174,6 +196,7 @@ var render = function () {
 		ctx.drawImage(monster.imageItem, monster.x, monster.y);
 	}
 
+
 	// Score
 	ctx.fillStyle = "rgb(250, 250, 250)";
 	ctx.font = "24px Helvetica";
@@ -183,17 +206,34 @@ var render = function () {
 
 };
 
-// The main game loop
+/////////////////////////////////////////////////////////
+//
+// Main game loop
+//
+////////////////////////////////////////////////////////
+
+	var fps = 60;
+	var interval = 1000/fps;
 var main = function () {
 	var now = Date.now();
-	
 	var delta = now - then;
 
+	// handle input
+	if (32 in keysDown){
+		isPaused= !isPaused;
+		delete keysDown[32];
+	}
+	
+	// update game objects
 	update(delta / 1000);
+	
+	// render
 	render();
 
-	then = now;
+	// cleanup
+	//keyPressed = {};
 
+	then = now;
 	// Request to do this again ASAP
 	requestAnimationFrame(main);
 };
